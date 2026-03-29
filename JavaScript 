@@ -1,0 +1,23 @@
+// وظيفة لجلب سعر البيتكوين من CoinGecko API
+async function getCryptoPrice() {
+    try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const data = await response.json();
+        
+        // تحديث الرقم في صفحة HTML
+        document.getElementById('btc-price').innerText = '$' + data.bitcoin.usd;
+    } catch (error) {
+        document.getElementById('btc-price').innerText = "Error loading price";
+    }
+}
+
+// وظيفة لنسخ عنوان المحفظة
+function copyAddress() {
+    const addr = document.getElementById('wallet-addr').innerText;
+    navigator.clipboard.writeText(addr);
+    alert("Address Copied: " + addr);
+}
+
+// تحديث السعر كل 10 ثوانٍ تلقائياً
+setInterval(getCryptoPrice, 10000);
+getCryptoPrice(); // تشغيلها لأول مرة عند فتح الموقع
